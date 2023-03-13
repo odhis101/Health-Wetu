@@ -27,7 +27,7 @@ const Destination = () => {
       checkNavigation();
     }, [originPlace, destinationPlace]);
     */
-    const apiKey = 'AIzaSyAeRdORzU5z5rUedWcqGLZxRwE_6w9isRc';
+    const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
 
     async function findNearestHospital() {
         try {
@@ -46,7 +46,8 @@ const Destination = () => {
           console.error(error);
         }
       }
-      findNearestHospital();
+      location = findNearestHospital();
+      console.log(location.name)
 
     return(
         /*
@@ -69,6 +70,7 @@ const Destination = () => {
         <View>
 
             <View style ={styles.container}>
+            
             <View style={styles.inputBox}>
             
             <GooglePlacesAutocomplete
@@ -84,7 +86,7 @@ const Destination = () => {
       currentLocation={true}
       currentLocationLabel="Current Location"
       query={{
-        key: 'AIzaSyAeRdORzU5z5rUedWcqGLZxRwE_6w9isRc',
+        key: apiKey,
         language: 'en',
         components: 'country:ke',
       }}
@@ -105,19 +107,15 @@ const Destination = () => {
       enablePoweredBygoogle={false}
       fetchDetails= {true}
       query={{
-        key: 'AIzaSyAeRdORzU5z5rUedWcqGLZxRwE_6w9isRc',
+        key: apiKey,
         language: 'en',
         components: 'country:ke',
       }}
     />
             <View style ={styles.Timebar}>
-            <AntDesign name ={'arrowright'} size ={16} color={'red'}></AntDesign> 
-            
+            <AntDesign name ={'arrowright'} size ={16} color={'red'}></AntDesign>   
+            </View>         
             </View>
-            
-            </View>
-            
-           
             <ModuleButton text = 'Current Location & Nearest Hospital  '/>
 
             
@@ -136,6 +134,16 @@ const styles = StyleSheet.create({
         marginRight:10,
         height:'100%'
     },
+    text: {
+        fontSize: 20,
+    
+      },
+      underline: {
+        textDecorationLine: 'underline',
+        textDecorationColor: 'red',
+        textDecorationStyle: 'solid',
+      
+      },
   
     inputText:{
         fontSize:14,
