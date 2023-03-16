@@ -4,6 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MapView,{PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Ionicons from "react-native-vector-icons/Ionicons"
+import OurButton from "health-wetu/components/ourButton/ourButton.js"
 
 const SearchResults = () =>
 
@@ -12,7 +13,13 @@ const SearchResults = () =>
 return(
 
     // you need to add the navigation
-    <View>
+    <View >
+      <View style={styles.Header}>
+        <OurButton text='Your Loaction ' />  
+        <OurButton text='Destination' />  
+        </View>
+      
+
         
            <MapView style={styles.Image}
             provider={PROVIDER_GOOGLE}
@@ -29,11 +36,14 @@ return(
           >
           <Marker 
           //coordinate={{latitude:originPlace.details.geometry.location.lat,longitude: originPlace.details.geometry.location.lng}}
-            coordinate={{latitude:-6.2921,longitude:36.8219}} // this will be where the closest ambulance is located 
+          // this is the ambulance location which is the coordinates will also be dynamically located 
+            coordinate={{latitude:-6.2921,longitude:36.8219}} 
+            // this will be where the closest ambulance is located 
         >
           <Image source={require('../../assets/ambulance.png')} style={{width:60,height:60,resizeMode:'contain'}}/>
           </Marker>
           <MapViewDirections
+          // this is the route from the ambulance to your location
           origin={{latitude:-6.2921,longitude:36.8219}}
           destination= {{latitude:-2.2921,longitude:36.8219}}
           strokeWidth={ 5 }
@@ -42,6 +52,8 @@ return(
           />
 
           <MapViewDirections
+          // this is the direction from your location to the closest hospital
+          // origin value will be dynamically determined based on your location from the server 
           origin={{latitude:-1.2921,longitude:36.8219}}
           destination= {{latitude:-2.2921,longitude:36.8219}}
           strokeWidth={ 5 }
@@ -49,13 +61,14 @@ return(
           apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
           />
           <Marker 
-     
+          // this is your loaction 
           coordinate= {{latitude:-1.2921,longitude:36.8219}}
           icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
 
 
           />
           <Marker 
+          // this is the hospital  location
           coordinate= {{latitude:-2.2921,longitude:36.8219}}
           title={'destination'}
           />
@@ -96,6 +109,10 @@ return(
 )
 }
 const styles = StyleSheet.create({
+  Header:{
+    marginTop:30,
+    
+  },
 confirm:{
     padding: 10,
     margin:10,

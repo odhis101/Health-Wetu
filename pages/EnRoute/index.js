@@ -25,26 +25,58 @@ const origin ={
             </View>
 
             <MapView style={styles.Image}
-                provider={PROVIDER_GOOGLE}
-               initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }} 
-              >
-              <Marker 
-              coordinate={{latitude:37.78825,longitude: -122.4324}}
-            >
-              <Image source={require('../../assets/helicopter.png')} style={{width:60,height:60,resizeMode:'contain'}}/>
-              </Marker>
-              <MapViewDirections
-    origin={origin}
-    destination={destination}
-    apikey={'AIzaSyAeRdORzU5z5rUedWcqGLZxRwE_6w9isRc'}
-    strokeWidth={5}
-    strokeColor="red"
-  />
+            provider={PROVIDER_GOOGLE}
+           initialRegion={{
+           /*
+            latitude: originPlace.details.geometry.location.lat,
+            longitude: originPlace.details.geometry.location.lng,
+            */
+            latitude: -1.2921,
+            longitude: 36.8219,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }} 
+          >
+            <Marker 
+            // this is the ambulance location 
+          //coordinate={{latitude:originPlace.details.geometry.location.lat,longitude: originPlace.details.geometry.location.lng}}
+            coordinate={{latitude:-6.2921,longitude:36.8219}} // this will be where the closest ambulance is located 
+        >
+          <Image source={require('../../assets/ambulance.png')} style={{width:60,height:60,resizeMode:'contain'}}/>
+          </Marker>
+
+  <MapViewDirections
+          // this is the direction from the ambulance to your location
+          origin={{latitude:-6.2921,longitude:36.8219}}
+          destination= {{latitude:-1.2921,longitude:36.82199}}
+          strokeWidth={ 5 }
+          strokeColor= 'black'
+          apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
+          />
+
+          <MapViewDirections
+          // this is the direction from your location to the closest hospital 
+          origin={{latitude:-1.2921,longitude:36.8219}}
+          destination= {{latitude:-2.2921,longitude:36.8219}}
+          strokeWidth={ 5 }
+          strokeColor= 'red'
+          apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
+          />
+
+          <Marker 
+          // this is your location marker we can make it a blue dot 
+          coordinate= {{latitude:-1.2921,longitude:36.8219}}
+          icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+
+
+          />
+          <Marker 
+          // this is the destination marker we can make it a hospital icon
+          coordinate= {{latitude:-2.2921,longitude:36.8219}}
+          title={'destination'}
+          />
+
+
               </MapView>
              <View style={styles.Container}>
              <Image style={styles.image} source='../assets/ambulance.png'></Image>
