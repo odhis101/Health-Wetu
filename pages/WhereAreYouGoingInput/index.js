@@ -5,9 +5,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 //import OurButton from "C:/Users/josho/health-wetu/components/ourButton/ourButton.js"
 import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
 import * as Location from 'expo-location';
-
+import { useNavigation } from '@react-navigation/native';
 const Destination = () => {
-/*
+
     const [originPlace, setOriginPlace] = useState(null);
     const [destinationPlace, setDestinationPlace] = useState(null);
 
@@ -26,7 +26,10 @@ const Destination = () => {
     useEffect(() => {
       checkNavigation();
     }, [originPlace, destinationPlace]);
-    */
+
+
+
+  
     const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
 
     async function findNearestHospital() {
@@ -41,7 +44,6 @@ const Destination = () => {
           const response = await fetch(url);
           const data = await response.json();
           const nearestHospital = data.results[0];
-       return nearestHospital,location;
         } catch (error) {
           console.error(error);
         }
@@ -52,6 +54,29 @@ const Destination = () => {
       function printLocation(){
           console.log(location)
       }
+      const nearByHospitals =async() => {
+        try {
+          const { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.error('Permission to access location was denied');
+            return;
+          }
+          const originPlace = await Location.getCurrentPositionAsync({});
+          const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${originPlace.coords.latitude},${originPlace.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          const destinationPlace = data.results[0];
+          console.log('here it is', destinationPlace, originPlace)
+          navigation.navigate('searchResults', {
+            originPlace,
+            destinationPlace,
+          })
+        } catch (error) {
+          console.error(error);
+        }
+        
+       
+    }
 
     return(
         /*
@@ -120,7 +145,7 @@ const Destination = () => {
             <AntDesign name ={'arrowright'} size ={16} color={'red'}></AntDesign>   
             </View>         
             </View>
-            <ModuleButton text = 'Current Location & Nearest Hospital  ' onPress ={printLocation} />
+            <ModuleButton text = 'Current Location & Nearest Hospital  ' onPress ={nearByHospitals} />
 
             
         </View>

@@ -4,7 +4,7 @@ import { styles } from "./styles";
 import OurData from "health-wetu/components/ourData/ourData.js"
 import OurButton from "health-wetu/components/ourButton/ourButton.js"
 import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
-const Home =()=> {
+const Home =({navigation})=> {
   /*
   const [users, setUsers] = useState();
   
@@ -24,12 +24,12 @@ const Home =()=> {
   }
          
     
- 
+   */
   const pressHandler =() =>{
-      navigation.navigate('destination');
+      navigation.navigate('WhereAreYouGoingInput');
       
   }
-  */
+
  console.log('first log ever ')
     
     return( 
@@ -39,7 +39,7 @@ const Home =()=> {
             style= {styles.Image}
             source={require( '../../assets/HealthWetu.png' )}
             />
-            <OurButton text='Where are you ' /> 
+            <OurButton text='Where are you ' onPress={pressHandler} /> 
             <ModuleButton text = 'calling for a friend '/>
             <OurData/>
              </View>

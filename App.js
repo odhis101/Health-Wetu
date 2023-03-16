@@ -4,13 +4,21 @@ import Home from "./pages/Home"
 import WhereAreYouGoingInput from "./pages/WhereAreYouGoingInput"
 import SearchResults from "./pages/SearchResults"
 import EnRoute from './pages/EnRoute';
+import Root from 'health-wetu/navigation/Root.js';
+import Amplify from 'aws-amplify';
+import config from "health-wetu/src/aws-exports.js";
 
 
 
-export default function App() {
+
+
+
+
+const App = () => {
   return (
-   <SearchResults/>
+   <Root/>
   );
 }
+export default App;
 
 

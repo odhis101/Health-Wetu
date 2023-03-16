@@ -5,22 +5,48 @@ import MapView,{PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import OurButton from "health-wetu/components/ourButton/ourButton.js"
+import { useRoute } from '@react-navigation/native'; 
+import * as Location from 'expo-location';
+const SearchResults = ({navigation}) =>{
+  const route = useRoute();
+  const {originPlace, destinationPlace} = route.params
+  const [location, setLocation] = useState(null);
 
-const SearchResults = () =>
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
 
+      Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.High, timeInterval: 5000 },
+        position => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+        },
+      );
+    })();
+  }, []);
 
-{
+ 
+  const pressHandler =() =>{
+    navigation.navigate('searchResults', {
+      location,
+      destinationPlace,
+    })
+  }
+ 
+  console.log('this is',destinationPlace )
 return(
 
     // you need to add the navigation
     <View >
       <View style={styles.Header}>
-        <OurButton text='Your Loaction ' />  
-        <OurButton text='Destination' />  
+   
+        <OurButton text={destinationPlace.name} />  
         </View>
-      
-
-        
            <MapView style={styles.Image}
             provider={PROVIDER_GOOGLE}
            initialRegion={{
@@ -34,6 +60,8 @@ return(
             longitudeDelta: 0.0421,
           }} 
           >
+
+
           <Marker 
           //coordinate={{latitude:originPlace.details.geometry.location.lat,longitude: originPlace.details.geometry.location.lng}}
           // this is the ambulance location which is the coordinates will also be dynamically located 
@@ -42,10 +70,13 @@ return(
         >
           <Image source={require('../../assets/ambulance.png')} style={{width:60,height:60,resizeMode:'contain'}}/>
           </Marker>
+
+
+
           <MapViewDirections
           // this is the route from the ambulance to your location
           origin={{latitude:-6.2921,longitude:36.8219}}
-          destination= {{latitude:-2.2921,longitude:36.8219}}
+          destination= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
           strokeWidth={ 5 }
           strokeColor= 'black'
           apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
@@ -54,22 +85,22 @@ return(
           <MapViewDirections
           // this is the direction from your location to the closest hospital
           // origin value will be dynamically determined based on your location from the server 
-          origin={{latitude:-1.2921,longitude:36.8219}}
-          destination= {{latitude:-2.2921,longitude:36.8219}}
+          origin={{latitude:location.latitude,longitude:location.longitude}}
+          destination= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
           strokeWidth={ 5 }
           strokeColor= 'red'
           apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
           />
-          <Marker 
+          <Marker
           // this is your loaction 
-          coordinate= {{latitude:-1.2921,longitude:36.8219}}
+          coordinate= {{latitude:originPlace.coords.latitude,longitude:originPlace.coords.longitude}}
           icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
 
 
           />
           <Marker 
           // this is the hospital  location
-          coordinate= {{latitude:-2.2921,longitude:36.8219}}
+          coordinate= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
           title={'destination'}
           />
           </MapView>
@@ -99,7 +130,7 @@ return(
             
         </View>
       
-      <Pressable  style={styles.confirm}> 
+      <Pressable onPress={pressHandler} style={styles.confirm}> 
           <Text style={styles.text}>
             Confirm Requests
           </Text>
@@ -109,10 +140,7 @@ return(
 )
 }
 const styles = StyleSheet.create({
-  Header:{
-    marginTop:30,
-    
-  },
+
 confirm:{
     padding: 10,
     margin:10,

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 const styles = StyleSheet.create({
     Image:{
         
-        marginTop:30,
+   
         height:300,
         width:'100%',
     },

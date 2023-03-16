@@ -1,0 +1,28 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthwetu-dev-193128-authRole",
+      "UnauthRoleArn": "arn:aws:iam::436229827893:role/amplify-healthwetu-dev-193128-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::436229827893:role/amplify-healthwetu-dev-193128-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-healthwetu-dev-193128-deployment",
+      "UnauthRoleName": "amplify-healthwetu-dev-193128-unauthRole",
+      "StackName": "amplify-healthwetu-dev-193128",
+      "StackId": "arn:aws:cloudformation:eu-north-1:436229827893:stack/amplify-healthwetu-dev-193128/482d2210-c418-11ed-9d04-0a1d14015b74",
+      "AmplifyAppId": "d16dljn6xcem97"
+    }
+  },
+  "healthwetu": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthwetu-healthwetu-225736-authRole",
+      "UnauthRoleArn": "arn:aws:iam::436229827893:role/amplify-healthwetu-healthwetu-225736-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::436229827893:role/amplify-healthwetu-healthwetu-225736-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-healthwetu-healthwetu-225736-deployment",
+      "UnauthRoleName": "amplify-healthwetu-healthwetu-225736-unauthRole",
+      "StackName": "amplify-healthwetu-healthwetu-225736",
+      "StackId": "arn:aws:cloudformation:eu-north-1:436229827893:stack/amplify-healthwetu-healthwetu-225736/13b78b20-c435-11ed-9e75-0ea9e4121468",
+      "AmplifyAppId": "d16dljn6xcem97"
+    }
+  }
+}
