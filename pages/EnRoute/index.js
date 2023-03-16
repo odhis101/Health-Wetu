@@ -37,7 +37,6 @@ return(
         <View style={styles.container}>
             <View style ={styles.Status}>
               <Text style= {styles.Title}>Ambulance En-route</Text> 
-              <Text style= {styles.SubTitle}>From: Conquest</Text>
               <Text style= {styles.SubTitle}>To: Getrudes</Text>
             </View>
 
