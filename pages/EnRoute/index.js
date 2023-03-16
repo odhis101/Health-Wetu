@@ -1,22 +1,39 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
+
 import { StyleSheet, Text, TouchableOpacity, View, Image, Pressable,Button} from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import {TextInput} from 'react-native-gesture-handler';
 import MapView,{PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import { useRoute } from '@react-navigation/native'; 
 const EnRoute = (props) => {
+  const route = useRoute();
 const confirm = () => {
   console.warn('confirm')
 }
-const destination ={
-  latitude: 37.78825,
-  longitude: -122.4324,
-}
-const origin ={
-  latitude: 38.78825,
-  longitude: -122.4324,
-}
-    return(
+// all the data you need is destination data and ambulance ID so the live data can be updated 
+const { destinationPlace, ambulanceData} = route.params
+const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.High, timeInterval: 5000 },
+        position => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+        },
+      );
+    })();
+  }, []);   
+
+return(
         <View style={styles.container}>
             <View style ={styles.Status}>
               <Text style= {styles.Title}>Ambulance En-route</Text> 
@@ -48,7 +65,7 @@ const origin ={
   <MapViewDirections
           // this is the direction from the ambulance to your location
           origin={{latitude:-6.2921,longitude:36.8219}}
-          destination= {{latitude:-1.2921,longitude:36.82199}}
+          destination= {{latitude:location.latitude,longitude:location.longitude}}
           strokeWidth={ 5 }
           strokeColor= 'black'
           apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
@@ -56,8 +73,8 @@ const origin ={
 
           <MapViewDirections
           // this is the direction from your location to the closest hospital 
-          origin={{latitude:-1.2921,longitude:36.8219}}
-          destination= {{latitude:-2.2921,longitude:36.8219}}
+          origin={{latitude:location.latitude,longitude:location.longitude}}
+          destination= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
           strokeWidth={ 5 }
           strokeColor= 'red'
           apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
@@ -65,14 +82,14 @@ const origin ={
 
           <Marker 
           // this is your location marker we can make it a blue dot 
-          coordinate= {{latitude:-1.2921,longitude:36.8219}}
+          coordinate= {{latitude:location.latitude,longitude:location.longitude}}
           icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
 
 
           />
           <Marker 
           // this is the destination marker we can make it a hospital icon
-          coordinate= {{latitude:-2.2921,longitude:36.8219}}
+          coordinate= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
           title={'destination'}
           />
 

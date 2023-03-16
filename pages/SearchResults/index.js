@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image,TextInput,Button,Pressable} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MapView,{PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -6,11 +6,12 @@ import MapViewDirections from 'react-native-maps-directions';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import OurButton from "health-wetu/components/ourButton/ourButton.js"
 import { useRoute } from '@react-navigation/native'; 
+
 import * as Location from 'expo-location';
 const SearchResults = ({navigation}) =>{
   const route = useRoute();
   const {originPlace, destinationPlace} = route.params
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
 
   useEffect(() => {
     (async () => {
@@ -32,13 +33,13 @@ const SearchResults = ({navigation}) =>{
 
  
   const pressHandler =() =>{
-    navigation.navigate('searchResults', {
+    navigation.navigate('EnRoute', {
       location,
       destinationPlace,
     })
   }
  
-  console.log('this is',destinationPlace )
+  console.log('this is',location )
 return(
 
     // you need to add the navigation
@@ -93,7 +94,7 @@ return(
           />
           <Marker
           // this is your loaction 
-          coordinate= {{latitude:originPlace.coords.latitude,longitude:originPlace.coords.longitude}}
+          coordinate= {{latitude:location.latitude,longitude:location.longitude}}
           icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
 
 
