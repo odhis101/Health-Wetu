@@ -2,8 +2,8 @@ import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, Image, TouchableOpacity, View,TextInput,Button } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import OurButton from "C:/Users/josho/health-wetu/components/ourButton/ourButton.js"
-import ModuleButton from "C:/Users/josho/health-wetu/components/moduleButton/moduleButton.js"
+//import OurButton from "C:/Users/josho/health-wetu/components/ourButton/ourButton.js"
+import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
 import * as Location from 'expo-location';
 
 const Destination = () => {
@@ -41,13 +41,17 @@ const Destination = () => {
           const response = await fetch(url);
           const data = await response.json();
           const nearestHospital = data.results[0];
-          console.log(nearestHospital);
+       return nearestHospital,location;
         } catch (error) {
           console.error(error);
         }
       }
       location = findNearestHospital();
-      console.log(location.name)
+      console.log('here it is')
+      console.log(location)
+      function printLocation(){
+          console.log(location)
+      }
 
     return(
         /*
@@ -116,7 +120,7 @@ const Destination = () => {
             <AntDesign name ={'arrowright'} size ={16} color={'red'}></AntDesign>   
             </View>         
             </View>
-            <ModuleButton text = 'Current Location & Nearest Hospital  '/>
+            <ModuleButton text = 'Current Location & Nearest Hospital  ' onPress ={printLocation} />
 
             
         </View>

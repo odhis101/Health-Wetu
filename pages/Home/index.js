@@ -1,9 +1,9 @@
 import { StyleSheet, Text, Image, TouchableOpacity, View,ScrollView,Button} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { styles } from "./styles";
-import OurData from "C:/Users/josho/health-wetu/components/ourData/ourData.js"
-import OurButton from "C:/Users/josho/health-wetu/components/ourButton/ourButton.js"
-import ModuleButton from "C:/Users/josho/health-wetu/components/moduleButton/moduleButton.js"
+import OurData from "health-wetu/components/ourData/ourData.js"
+import OurButton from "health-wetu/components/ourButton/ourButton.js"
+import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
 const Home =()=> {
   /*
   const [users, setUsers] = useState();
