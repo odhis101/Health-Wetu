@@ -2,15 +2,18 @@ import React, {useState,useEffect} from 'react';
 
 import { StyleSheet, Text, TouchableOpacity, View, Image, Pressable,Button} from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons"
-import {TextInput} from 'react-native-gesture-handler';
 import MapView,{PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { useRoute } from '@react-navigation/native'; 
+import * as Location from 'expo-location';
+
 const EnRoute = (props) => {
+
   const route = useRoute();
 const confirm = () => {
   console.warn('confirm')
 }
+
 // all the data you need is destination data and ambulance ID so the live data can be updated 
 const { destinationPlace, ambulanceData} = route.params
 const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
@@ -32,12 +35,13 @@ const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
       );
     })();
   }, []);   
+  console.log('here it is', location)
 
 return(
         <View style={styles.container}>
             <View style ={styles.Status}>
               <Text style= {styles.Title}>Ambulance En-route</Text> 
-              <Text style= {styles.SubTitle}>To: Getrudes</Text>
+              <Text style= {styles.SubTitle}>To: {destinationPlace.name}</Text>
             </View>
 
             <MapView style={styles.Image}

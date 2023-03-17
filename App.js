@@ -5,8 +5,7 @@ import WhereAreYouGoingInput from "./pages/WhereAreYouGoingInput"
 import SearchResults from "./pages/SearchResults"
 import EnRoute from './pages/EnRoute';
 import Root from 'health-wetu/navigation/Root.js';
-import Amplify from 'aws-amplify';
-import config from "health-wetu/src/aws-exports.js";
+ 
 
 
 
