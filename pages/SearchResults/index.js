@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image,TextInput,Button,Pressable} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MapView,{PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -12,6 +12,14 @@ const SearchResults = ({navigation}) =>{
   const route = useRoute();
   const {originPlace, destinationPlace} = route.params
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+  const [region, setRegion] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+  
+
 
   useEffect(() => {
     (async () => {
@@ -51,10 +59,7 @@ return(
            <MapView style={styles.Image}
             provider={PROVIDER_GOOGLE}
            initialRegion={{
-           /*
-            latitude: originPlace.details.geometry.location.lat,
-            longitude: originPlace.details.geometry.location.lng,
-            */
+           
             latitude: -1.2921,
             longitude: 36.8219,
             latitudeDelta: 0.0922,
@@ -66,23 +71,13 @@ return(
           <Marker 
           //coordinate={{latitude:originPlace.details.geometry.location.lat,longitude: originPlace.details.geometry.location.lng}}
           // this is the ambulance location which is the coordinates will also be dynamically located 
-            coordinate={{latitude:-6.2921,longitude:36.8219}} 
+          coordinate={region}
+          anchor={{ x: 0.5, y: 0.5 }}
+          //ref={ambulanceMarkerRef}
             // this will be where the closest ambulance is located 
         >
           <Image source={require('../../assets/ambulance.png')} style={{width:60,height:60,resizeMode:'contain'}}/>
           </Marker>
-
-
-
-          <MapViewDirections
-          // this is the route from the ambulance to your location
-          origin={{latitude:-6.2921,longitude:36.8219}}
-          destination= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
-          strokeWidth={ 5 }
-          strokeColor= 'black'
-          apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
-          />
-
           <MapViewDirections
           // this is the direction from your location to the closest hospital
           // origin value will be dynamically determined based on your location from the server 
@@ -95,15 +90,19 @@ return(
           <Marker
           // this is your loaction 
           coordinate= {{latitude:location.latitude,longitude:location.longitude}}
-          icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+         
 
 
-          />
+          >
+          <Image source={require('../../assets/bluedot.png')} style={{width:15,height:15,resizeMode:'contain'}}/>
+            </Marker>
           <Marker 
           // this is the hospital  location
           coordinate= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
           title={'destination'}
-          />
+          >
+            <Image source={require('../../assets/hospital.jpeg')} style={{width:60,height:60,resizeMode:'contain'}}/>
+            </Marker>
           </MapView>
           <View style={styles.Container}>
           {/* image */}
@@ -115,7 +114,7 @@ return(
                 3
             </Text>
             <Text style={styles.time}>
-                8:03 pm drop off
+            ETA: minutes
             </Text>
 
           </View>

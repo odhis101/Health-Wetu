@@ -6,10 +6,11 @@ import SearchResults from "./pages/SearchResults"
 import EnRoute from './pages/EnRoute';
 import Root from 'health-wetu/navigation/Root.js';
  
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig  from './src/aws-exports';
 
-
-
-
+import { withAuthenticator } from 'aws-amplify-react-native'
+Auth.configure(awsconfig);
 
 
 
@@ -18,6 +19,5 @@ const App = () => {
    <Root/>
   );
 }
-export default App;
-
+export default withAuthenticator(App);
 
