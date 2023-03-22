@@ -4,20 +4,21 @@ import Home from "./pages/Home"
 import WhereAreYouGoingInput from "./pages/WhereAreYouGoingInput"
 import SearchResults from "./pages/SearchResults"
 import EnRoute from './pages/EnRoute';
+import UserData from './pages/userData';
 import Root from 'health-wetu/navigation/Root.js';
  
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig  from './src/aws-exports';
+//import Amplify, { Auth } from 'aws-amplify';
+//import awsconfig  from './src/aws-exports';
 
-import { withAuthenticator } from 'aws-amplify-react-native'
-Auth.configure(awsconfig);
+//import { withAuthenticator } from 'aws-amplify-react-native'
+//Auth.configure(awsconfig);
 
 
 
 const App = () => {
   return (
-   <Root/>
+   <UserData/>
   );
 }
-export default withAuthenticator(App);
+export default App;
 

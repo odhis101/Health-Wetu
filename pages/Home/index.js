@@ -4,7 +4,14 @@ import { styles } from "./styles";
 import OurData from "health-wetu/components/ourData/ourData.js"
 import OurButton from "health-wetu/components/ourButton/ourButton.js"
 import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
+import React, { useState, useEffect,useRef } from 'react';
+
+
+
 const Home =({navigation})=> {
+   // var ws = new WebSocket('ws://localhost:8080');
+  
+
   /*
   const [users, setUsers] = useState();
   
@@ -31,17 +38,29 @@ const Home =({navigation})=> {
   }
 
  console.log('first log ever ')
-    
+ 
+
+
+
+
     return( 
     <ScrollView>
+        
          <View styles={styles.container}>
              <Image 
             style= {styles.Image}
             source={require( '../../assets/HealthWetu.png' )}
             />
             <OurButton text='Where are you ' onPress={pressHandler} /> 
+        
+
+
             <ModuleButton text = 'calling for a friend '/>
+
+         
             <OurData/>
+         
+    
              </View>
 
     
