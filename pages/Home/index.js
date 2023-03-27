@@ -5,38 +5,59 @@ import OurData from "health-wetu/components/ourData/ourData.js"
 import OurButton from "health-wetu/components/ourButton/ourButton.js"
 import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
 import React, { useState, useEffect,useRef } from 'react';
+import io from 'socket.io-client';
 
 
 
 const Home =({navigation})=> {
-   // var ws = new WebSocket('ws://localhost:8080');
+
+    const socket = io('ws://192.168.0.29:8080', { transports: ['websocket'] });
+
+    console.log('Socket.IO,',socket);
+
+
+    socket.on('connect', () => {
+      console.log('Socket.IO connected');
+    
+      // Send a message to the server after the connection is established
+      socket.emit('chat message', 'Hello, server!');
+    });
+    
+    socket.on('chat message', (message) => {
+      console.log('Socket.IO message received:', message);
+    });
+    
+    socket.on('disconnect', () => {
+      console.log('Socket.IO disconnected');
+    });
+    socket.on('connect_error', (error) => {
+        console.error('Socket.IO connection error:', error);
+      });
+      
+      socket.on('connect_timeout', (timeout) => {
+        console.error('Socket.IO connection timeout:', timeout);
+      });
+      
+      socket.on('error', (error) => {
+        console.error('Socket.IO error:', error);
+      });
+    
+    
+    
+    
+    
+    
   
 
-  /*
-  const [users, setUsers] = useState();
-  
-  useEffect(()  => {
-      const fetchData = async () => {
-          const userInfo = await Auth.currentAuthenticatedUser();
-       
-          setUsers(userInfo.attributes.sub);
-      
-      }
-      fetchData();
-  },[] )
-// this is a function to print the json data from auth aws 
-  const onSubmit = async () => {
-      const userInfo = await Auth.currentAuthenticatedUser();
-      console.log(userInfo.getUsername())
-  }
-         
-    
-   */
+
   const pressHandler =() =>{
       navigation.navigate('WhereAreYouGoingInput');
       
   }
-
+  const handleClick = () => {
+    console.log('Sending message to server');
+    socket.emit('chat message', 'Hello, server!');
+};
  console.log('first log ever ')
  
 
@@ -56,6 +77,8 @@ const Home =({navigation})=> {
 
 
             <ModuleButton text = 'calling for a friend '/>
+            <Button title="Send message to server" onPress={handleClick} />
+
 
          
             <OurData/>
