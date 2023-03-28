@@ -11,7 +11,7 @@ import io from 'socket.io-client';
 
 const Home =({navigation})=> {
 
-    const socket = io('ws://192.168.0.29:8080', { transports: ['websocket'] });
+    const socket = io('ws://10.66.5.84:8080', { transports: ['websocket'] });
 
     console.log('Socket.IO,',socket);
 
