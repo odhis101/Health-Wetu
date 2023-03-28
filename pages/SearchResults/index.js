@@ -10,11 +10,12 @@ import io from 'socket.io-client';
 
 import * as Location from 'expo-location';
 const SearchResults = ({navigation}) =>{
-  const socket = io('ws://10.66.5.84:8080', { transports: ['websocket'] });
+  const socket = io('ws://192.168.0.31:8080', { transports: ['websocket'] });
   
  
 
   const route = useRoute();
+  const MAX_ZOOM_LEVEL = 18;
   const {originPlace, destinationPlace} = route.params
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [region, setRegion] = useState({
@@ -42,7 +43,7 @@ const SearchResults = ({navigation}) =>{
           
           // Emit location data on 'userLocation' event
           console.log('sending user location', { latitude, longitude }, 'to server loCATION');
-          socket.emit('chat message', 'Heaallo, loaacational!');
+          socket.emit('user location', `${latitude} ${longitude}`);
         },
       );
     })();
@@ -73,6 +74,14 @@ return(
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }} 
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          showsCompass={true}
+          showsTraffic={true}
+          showsIndoors={true}
+          showsBuildings={true}
+          maxZoomLevel={MAX_ZOOM_LEVEL}
+          
           >
 
 
@@ -95,22 +104,13 @@ return(
           strokeColor= 'red'
           apikey={'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU'}
           />
-          <Marker
-          // this is your loaction 
-          // here you have render it to the server and also reload every few seconds 
-          coordinate= {{latitude:location.latitude,longitude:location.longitude}}
-         
-
-
-          >
-          <Image source={require('../../assets/bluedot.png')} style={{width:15,height:15,resizeMode:'contain'}}/>
-            </Marker>
+     
           <Marker 
           // this is the hospital  location
           coordinate= {{latitude:destinationPlace.geometry.location.lat,longitude:destinationPlace.geometry.location.lng}}
           title={'destination'}
           >
-            <Image source={require('../../assets/hospital.jpeg')} style={{width:60,height:60,resizeMode:'contain'}}/>
+         
             </Marker>
           </MapView>
           <View style={styles.Container}>
