@@ -6,9 +6,14 @@ import MapViewDirections from 'react-native-maps-directions';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import OurButton from "health-wetu/components/ourButton/ourButton.js"
 import { useRoute } from '@react-navigation/native'; 
+import io from 'socket.io-client';
 
 import * as Location from 'expo-location';
 const SearchResults = ({navigation}) =>{
+  const socket = io('ws://10.66.5.84:8080', { transports: ['websocket'] });
+  
+ 
+
   const route = useRoute();
   const {originPlace, destinationPlace} = route.params
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
@@ -28,17 +33,20 @@ const SearchResults = ({navigation}) =>{
         console.log('Permission to access location was denied');
         return;
       }
-
+  
       Location.watchPositionAsync(
         { accuracy: Location.Accuracy.High, timeInterval: 5000 },
         position => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
+          
+          // Emit location data on 'userLocation' event
+          console.log('sending user location', { latitude, longitude }, 'to server loCATION');
+          socket.emit('chat message', 'Heaallo, loaacational!');
         },
       );
     })();
   }, []);
-
  
   const pressHandler =() =>{
     navigation.navigate('EnRoute', {
@@ -89,6 +97,7 @@ return(
           />
           <Marker
           // this is your loaction 
+          // here you have render it to the server and also reload every few seconds 
           coordinate= {{latitude:location.latitude,longitude:location.longitude}}
          
 
