@@ -16,18 +16,28 @@ const Home =({navigation})=> {
 
 
     const socket = io('ws://192.168.0.31:8080', { transports: ['websocket'] });
+    const [ambulanceLocation, setAmbulanceLocation] = useState({latitude: 0, longitude: 0});
+
 
     useEffect(() => {
       socket.on('connect', () => {
         console.log('Socket.IO connected');
   
         // Send a message to the server after the connection is established
-        socket.emit('chat message', 'Hello, server!');
+        socket.emit('chat message', 'Hello, server!!!!');
       });
   
-      socket.on('chat message', (message) => {
-        console.log('Socket.IO message received:', message);
-        setMessage(message);
+  
+    
+      socket.on('chat message', (ambulanceLocation) => {
+        console.log('Received message from server:', ambulanceLocation);
+        //socket.emit('ambulance location', 'connected!!!!');
+
+        //console.log('Received message from server:', ambulanceLocation);
+      })
+      socket.on('ambulance location updated', (newLocation) => {
+        console.log('Received new ambulance location:', newLocation);
+        setAmbulanceLocation(newLocation);
       });
   
       socket.on('disconnect', () => {
@@ -46,13 +56,9 @@ const Home =({navigation})=> {
         console.error('Socket.IO error:', error);
       });
     }, []);
-    
-    
-    
-    
-    
-  
 
+   
+    
 
   const pressHandler =() =>{
       navigation.navigate('WhereAreYouGoingInput');

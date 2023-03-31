@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import { StyleSheet, Text, Image, TouchableOpacity, View,TextInput,Button } from 'react-native';
+import { StyleSheet, Text, Image, TouchableOpacity, View,TextInput,Button,ActivityIndicator  } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 //import OurButton from "C:/Users/josho/health-wetu/components/ourButton/ourButton.js"
@@ -7,12 +7,16 @@ import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
 import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 const Destination = () => {
+  const [loading, setLoading] = useState(false); // initialize the loading state as false
 
     const [originPlace, setOriginPlace] = useState(null);
     const [destinationPlace, setDestinationPlace] = useState(null);
+    const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
+
 
   
     const navigation = useNavigation();
+    
   
     const checkNavigation = () => {
       if (originPlace && destinationPlace) {
@@ -30,7 +34,6 @@ const Destination = () => {
 
 
   
-    const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
 
     async function findNearestHospital() {
         try {
@@ -77,25 +80,7 @@ const Destination = () => {
         
        
     }
-
     return(
-        /*
-        useEffect(() => {
-            (async () => {
-              
-              let { status } = await Location.requestForegroundPermissionsAsync();
-              if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-              }
-        
-              let location = await Location.getCurrentPositionAsync({});
-              setLocation(location);
-             
-            })();
-          }, []),
-*/
-    
         <View>
 
             <View style ={styles.container}>
