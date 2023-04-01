@@ -35,50 +35,37 @@ const Destination = () => {
 
   
 
-    async function findNearestHospital() {
-        try {
-          const { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            console.error('Permission to access location was denied');
-            return;
-          }
-          const location = await Location.getCurrentPositionAsync({});
-          const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
-          const response = await fetch(url);
-          const data = await response.json();
-          const nearestHospital = data.results[0];
-        } catch (error) {
-          console.error(error);
+    const findNearestHospital = async () => {
+      try {
+        setLoading(true);
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.error('Permission to access location was denied');
+          return;
         }
-      }
-      location = findNearestHospital();
-      console.log('here it is')
-      console.log(location)
-      function printLocation(){
-          console.log(location)
-      }
-      const nearByHospitals =async() => {
-        try {
-          const { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            console.error('Permission to access location was denied');
-            return;
-          }
-          const originPlace = await Location.getCurrentPositionAsync({});
-          const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${originPlace.coords.latitude},${originPlace.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
-          const response = await fetch(url);
-          const data = await response.json();
-          const destinationPlace = data.results[0];
-          console.log('here it is', destinationPlace, originPlace)
-          navigation.navigate('searchResults', {
-            originPlace,
-            destinationPlace,
-          })
-        } catch (error) {
-          console.error(error);
-        }
+        const location = await Location.getCurrentPositionAsync({});
+        const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        const nearestHospital = data.results[0];
+        setLoading(false);
+        setDestinationPlace({
+          description: nearestHospital.name,
+          geometry: { location: nearestHospital.geometry.location },
+        });
+        console.log(destinationPlace);
         
-       
+      } catch (error) {
+        setLoading(false);
+        console.error(error);
+      }
+    };
+  // if destinationplace is not null, then navigate to search results page 
+   if (destinationPlace) {
+     navigation.navigate('searchResults', {
+       originPlace,
+       destinationPlace,
+     })
     }
     return(
         <View>
@@ -130,7 +117,12 @@ const Destination = () => {
             <AntDesign name ={'arrowright'} size ={16} color={'red'}></AntDesign>   
             </View>         
             </View>
-            <ModuleButton text = 'Current Location & Nearest Hospital  ' onPress ={nearByHospitals} />
+            <ModuleButton text = 'Current Location & Nearest Hospital  '  onPress={findNearestHospital} />
+            {loading && <Text>Loading...</Text>}
+      {destinationPlace && (
+        <Text>Nearest hospital: {destinationPlace.description}</Text>
+      )}
+
 
             
         </View>

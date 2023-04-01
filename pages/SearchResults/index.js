@@ -17,6 +17,8 @@ const SearchResults = ({navigation}) =>{
   const route = useRoute();
   const MAX_ZOOM_LEVEL = 18;
   const {originPlace, destinationPlace} = route.params
+  console.log('this is origin place',originPlace)
+  console.log('this is destination place',destinationPlace)
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [region, setRegion] = useState({
     latitude: 37.78825,
@@ -24,7 +26,12 @@ const SearchResults = ({navigation}) =>{
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  const [ambulanceLocation, setAmbulanceLocation] = useState({latitude: 0, longitude: 0 });
+  const [ambulanceLocation, setAmbulanceLocation] = useState({
+    '_FelSuOqLK-bjEfJAAAK': '-1.2740602 36.7885285',
+    IERGq1ZSzNjQ430gAAAN: '-1.2740597 35.7885309',
+    nkv_IJbTik88Jv0AAAAR: '-1.2740607 34.7885278',
+    K7PNpLZJunoSfgNIAAAV: '-1.2740783 32.788526'
+  });
 
 
   useEffect(() => {
@@ -103,7 +110,8 @@ return(
     <View >
       <View style={styles.Header}>
    
-        <OurButton text={destinationPlace.name} />  
+      <OurButton text={destinationPlace.description} />  
+
         </View>
            <MapView style={styles.Image}
             provider={PROVIDER_GOOGLE}
@@ -124,17 +132,22 @@ return(
           
           >
 
-
-          <Marker 
-          //coordinate={{latitude:originPlace.details.geometry.location.lat,longitude: originPlace.details.geometry.location.lng}}
-          // this is the ambulance location which is the coordinates will also be dynamically located 
-          coordinate={region}
-          anchor={{ x: 0.5, y: 0.5 }}
-          //ref={ambulanceMarkerRef}
-            // this will be where the closest ambulance is located 
-        >
-          <Image source={require('../../assets/ambulance.png')} style={{width:60,height:60,resizeMode:'contain'}}/>
-          </Marker>
+{Object.keys(ambulanceLocation).map((key) => (
+  <Marker
+    key={key}
+    coordinate={{
+      latitude: parseFloat(ambulanceLocation[key].split(" ")[0]),
+      longitude: parseFloat(ambulanceLocation[key].split(" ")[1]),
+    }}
+    anchor={{ x: 0.5, y: 0.5 }}
+  >
+    <Image
+      source={require("../../assets/ambulance.png")}
+      style={{ width: 60, height: 60, resizeMode: "contain" }}
+    />
+  </Marker>
+))}
+        
           <MapViewDirections
           // this is the direction from your location to the closest hospital
           // origin value will be dynamically determined based on your location from the server 
