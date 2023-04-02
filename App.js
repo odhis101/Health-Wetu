@@ -17,7 +17,7 @@ import Root from 'health-wetu/navigation/Root.js';
 
 const App = () => {
   return (
-   <UserData/>
+   <Root/>
   );
 }
 export default App;
