@@ -6,14 +6,21 @@ const UserData = () => {
     <View style={styles.container}>
       <View style={styles.one}>
   
-        <Text style={{color: 'white', fontSize: 18, textAlign: 'center', marginTop: 80 , marginLeft:"20%"}}>Joshua Odhiambo</Text>
-        <Text style={{color: 'white', fontSize: 18, textAlign: 'center', marginTop: 10 , marginLeft:"9%"}}>21 years old</Text>
+        <Text style={{color: 'white', fontSize: 15, textAlign: 'center', marginTop: 95 , marginLeft:"15%" ,fontWeight: 'bold'}}>Joshua Odhiambo</Text>
+        <Text style={{color: 'white', fontSize: 15, textAlign: 'center' , marginLeft:"5%",fontWeight: 'bold'}}>21 years old</Text>
       
       </View>
       <View style={styles.two}>
         <View style = {styles.twoContainer}> 
-        <Text>Medical Id</Text>
-        <Text>Weight: 68 kgs</Text>
+        <View> 
+        <Text >
+  <Text style={styles.titleData}>Diagno</Text>
+  sis</Text>
+    </View>
+        <Text style = {{color :'#707070', marginTop: 5}}>Help doctorhjhs know what’s going on</Text>
+        <View style = {styles.medicalhistory}> 
+
+        </View>
         </View>
        
       </View>
@@ -32,6 +39,11 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 500,
   },
+  titleData: {
+     textDecorationLine: 'underline',
+    color: 'red' 
+
+  },
   one: {
     width: '100%',
     height: 200,
@@ -46,9 +58,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
   },
     twoContainer: {
+     borderWidth: 2,
+    borderColor: 'red',
+    padding: 10,   
+    marginTop: 80,
     width: '100%',
     height: 100,
-    margin:'5%'
+    
     },
   picture: {
     position: 'absolute',
