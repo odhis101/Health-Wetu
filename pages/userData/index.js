@@ -17,7 +17,7 @@ const UserData = () => {
   <Text style={styles.titleData}>Diagno</Text>
   sis</Text>
     </View>
-        <Text style = {{color :'#707070', marginTop: 5}}>Help doctorhjhs know what’s going on</Text>
+        <Text style = {{color :'#707070', marginTop: 5}}>Help doctors know what’s going on</Text>
         <View style = {styles.medicalhistory}> 
 
         </View>
