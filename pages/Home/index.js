@@ -15,7 +15,7 @@ const Home =({navigation})=> {
   const [inputValue, setInputValue] = useState('');
 
 
-    const socket = io('ws://192.168.0.31:8080', { transports: ['websocket'] });
+    const socket = io('wss://healthwetu.nw.r.appspot.com', { transports: ['websocket'] });
     const [ambulanceLocation, setAmbulanceLocation] = useState({latitude: 0, longitude: 0});
 
 
