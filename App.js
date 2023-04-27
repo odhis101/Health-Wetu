@@ -7,6 +7,7 @@ import EnRoute from './pages/EnRoute';
 import UserData from './pages/userData';
 import Root from 'health-wetu/navigation/Root.js';
  
+
 //import Amplify, { Auth } from 'aws-amplify';
 //import awsconfig  from './src/aws-exports';
 
