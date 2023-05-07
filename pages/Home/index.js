@@ -14,50 +14,9 @@ const Home =({navigation})=> {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
+ /*ws://192.168.0.31:8080 */
+  /*wss://healthwetu.nw.r.appspot.com:8080 */ 
 
-    const socket = io('wss://healthwetu.nw.r.appspot.com', { transports: ['websocket'] });
-    const [ambulanceLocation, setAmbulanceLocation] = useState({latitude: 0, longitude: 0});
-
-
-    useEffect(() => {
-      socket.on('connect', () => {
-        console.log('Socket.IO connected');
-  
-        // Send a message to the server after the connection is established
-        socket.emit('chat message', 'Hello, server!!!!');
-      });
-  
-  
-    
-      socket.on('chat message', (ambulanceLocation) => {
-        console.log('Received message from server:', ambulanceLocation);
-        //socket.emit('ambulance location', 'connected!!!!');
-
-        //console.log('Received message from server:', ambulanceLocation);
-      })
-      socket.on('ambulance location updated', (newLocation) => {
-        console.log('Received new ambulance location:', newLocation);
-        setAmbulanceLocation(newLocation);
-      });
-  
-      socket.on('disconnect', () => {
-        console.log('Socket.IO disconnected');
-      });
-  
-      socket.on('connect_error', (error) => {
-        console.error('Socket.IO connection error:', error);
-      });
-  
-      socket.on('connect_timeout', (timeout) => {
-        console.error('Socket.IO connection timeout:', timeout);
-      });
-  
-      socket.on('error', (error) => {
-        console.error('Socket.IO error:', error);
-      });
-    }, []);
-
-   
     
 
   const pressHandler =() =>{
@@ -96,7 +55,6 @@ const Home =({navigation})=> {
             <Text>{message.text}</Text>
             <TextInput value={inputValue} onChangeText={setInputValue} />
 
-            <Button title="Send message to server" onPress={handleClick} />
 
 
          

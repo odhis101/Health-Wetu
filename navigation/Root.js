@@ -4,15 +4,35 @@ import Home from '../pages/Home';
 import WhereAreYouGoingInput from '../pages/WhereAreYouGoingInput';
 import SearchResults from '../pages/SearchResults';
 import EnRoute from '../pages/EnRoute';
+import NewUser from '../pages/NewUser';
+import SignUp from '../pages/Signup';
+import Login from '../pages/Login';
 import React from 'react';
 
 const Stack = createStackNavigator();
 const RootNavigator = () => {
     return (
         <NavigationContainer  >
-            <Stack.Navigator  
-             defaultScreenOptions={Home}>
-                 <Stack.Screen
+           <Stack.Navigator
+        initialRouteName="NewUser"
+        screenOptions={{
+          headerShown: false
+        }}
+      >
+                   <Stack.Screen
+                  name="NewUser"
+                  component={NewUser}
+                  />
+                   <Stack.Screen
+                  name="Login"
+                  component={Login}
+                  />
+                   <Stack.Screen
+                  name="SignUp"
+                  component={SignUp}
+                  />
+                  
+               <Stack.Screen
                 name="Home"
                 component={Home}
               
