@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "healthwetuc01267d8_identitypool_c01267d8",
+    "identityPoolName": "tillwecantmove67bc4952_identitypool_67bc4952",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "healthc01267d8",
-    "userPoolName": "healthwetuc01267d8_userpool_c01267d8",
+    "resourceNameTruncated": "tillwe67bc4952",
+    "userPoolName": "tillwecantmove67bc4952_userpool_67bc4952",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,10 +20,7 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email",
-      "family_name",
-      "gender",
-      "picture"
+      "email"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
@@ -34,19 +31,24 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "healthc01267d8_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "tillwe67bc4952_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "c01267d8",
-    "resourceName": "healthwetuc01267d8",
+    "sharedId": "67bc4952",
+    "resourceName": "tillwecantmove67bc495267bc4952",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
-    "usernameAttributes": [
-      "email, phone_number"
-    ],
-    "triggers": {},
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": {
+      "PostConfirmation": [
+        "custom"
+      ]
+    },
+    "hostedUI": false,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true
   }
-}
+}   

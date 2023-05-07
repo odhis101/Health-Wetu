@@ -11,6 +11,24 @@ import io from 'socket.io-client';
 import * as Location from 'expo-location';
 const SearchResults = ({navigation}) =>{
   const socket = io('ws://192.168.0.31:8080', { transports: ['websocket'] });
+  function distance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the earth in km
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // Distance in km
+    return d;
+  }
+  
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
   
  
 
@@ -27,10 +45,10 @@ const SearchResults = ({navigation}) =>{
     longitudeDelta: 0.0421,
   });
   const [ambulanceLocation, setAmbulanceLocation] = useState({
-    '_FelSuOqLK-bjEfJAAAK': '-1.2740602 36.7885285',
-    IERGq1ZSzNjQ430gAAAN: '-1.2740597 35.7885309',
-    nkv_IJbTik88Jv0AAAAR: '-1.2740607 34.7885278',
-    K7PNpLZJunoSfgNIAAAV: '-1.2740783 32.788526'
+    
+    IERGq1ZSzNjQ430gjoshua: '-1.2740597 35.7885309',
+    IERGq1ZSzNjQ430gAAsAN: '-1.2740597 36.7885309',
+    IERGq1ZSzNjQ430gAAssdAN: '-1.2740597 38.7885309',
   });
 
 
@@ -95,14 +113,50 @@ const SearchResults = ({navigation}) =>{
       );
     })();
   }, []);
- 
+  console.log('Location.watchPositionAsync',location)
+  const [closestAmbulanceId, setClosestAmbulanceId] = useState(null);
+  useEffect(() => {
+    if (location.latitude && location.longitude) {
+      let closestDistance = Infinity;
+      let closestAmbulanceId = null;
+      Object.keys(ambulanceLocation).forEach(ambulanceId => {
+        const [latitude, longitude] = ambulanceLocation[ambulanceId].split(' ');
+        const distanceToAmbulance = distance(
+          location.latitude,
+          location.longitude,
+          latitude,
+          longitude,
+        );
+        if (distanceToAmbulance < closestDistance) {
+          closestDistance = distanceToAmbulance;
+          closestAmbulanceId = ambulanceId;
+        }
+      });
+      setClosestAmbulanceId(closestAmbulanceId);
+    }
+  }, [location, ambulanceLocation]);
+
+console.log('closest ambulance is ',closestAmbulanceId)
+  
+
+  
   const pressHandler =() =>{
+    console.log('Press handler called')
+// we send a request using socket.emit('request ambulance', { closestAmbulanceId, destinationPlace })
+socket.emit('request ambulance', { ambulanceId: closestAmbulanceId, destination: destinationPlace.description });
+
+    // if request has been accepted, navigate to enroute screen
+    /*
     navigation.navigate('EnRoute', {
       location,
       destinationPlace,
+      closestAmbulanceId,
     })
+    */
   }
  
+
+
   console.log('this is ambulance location ',ambulanceLocation )
 return(
 

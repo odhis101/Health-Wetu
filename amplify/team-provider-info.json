@@ -1,19 +1,26 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-healthwetu-dev-212208-authRole",
-      "UnauthRoleArn": "arn:aws:iam::436229827893:role/amplify-healthwetu-dev-212208-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::436229827893:role/amplify-healthwetu-dev-212208-authRole",
+      "AuthRoleName": "amplify-tillwecantmove-dev-15849-authRole",
+      "UnauthRoleArn": "arn:aws:iam::436229827893:role/amplify-tillwecantmove-dev-15849-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::436229827893:role/amplify-tillwecantmove-dev-15849-authRole",
       "Region": "eu-north-1",
-      "DeploymentBucketName": "amplify-healthwetu-dev-212208-deployment",
-      "UnauthRoleName": "amplify-healthwetu-dev-212208-unauthRole",
-      "StackName": "amplify-healthwetu-dev-212208",
-      "StackId": "arn:aws:cloudformation:eu-north-1:436229827893:stack/amplify-healthwetu-dev-212208/673d35a0-c74c-11ed-8586-0ebdbc522338",
-      "AmplifyAppId": "d2kh6fsghu9g9q"
+      "DeploymentBucketName": "amplify-tillwecantmove-dev-15849-deployment",
+      "UnauthRoleName": "amplify-tillwecantmove-dev-15849-unauthRole",
+      "StackName": "amplify-tillwecantmove-dev-15849",
+      "StackId": "arn:aws:cloudformation:eu-north-1:436229827893:stack/amplify-tillwecantmove-dev-15849/cb9c56f0-50ca-11ed-952e-06ac12226de6",
+      "AmplifyAppId": "d2zyihytq1m15c",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-tillwecantmove-dev-15849-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
-        "healthwetuc01267d8": {}
+        "tillwecantmove67bc495267bc4952": {}
+      },
+      "function": {
+        "tillwecantmove67bc495267bc4952PostConfirmation": {
+          "deploymentBucketName": "amplify-tillwecantmove-dev-15849-deployment",
+          "s3Key": "amplify-builds/tillwecantmove67bc495267bc4952PostConfirmation-41423577485748477151-build.zip"
+        }
       }
     }
   }
