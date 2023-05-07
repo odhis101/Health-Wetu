@@ -6,6 +6,8 @@ import OurButton from "health-wetu/components/ourButton/ourButton.js"
 import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
 import React, { useState, useEffect,useRef } from 'react';
 import io from 'socket.io-client';
+import { useAuth } from '../../AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -13,6 +15,32 @@ const Home =({navigation})=> {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const { authState } = useAuth();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const storeData = async () => {
+      try {
+        await AsyncStorage.setItem('userEmail', authState.user);
+        await AsyncStorage.setItem('userPassword', authState.password);
+      } catch (e) {
+        console.log('Error storing data:', e);
+      }
+    };
+
+    storeData();
+  }, [authState]);
+  const getData = async () => {
+    try {
+      const userEmail = await AsyncStorage.getItem('userEmail');
+      const userPassword = await AsyncStorage.getItem('userPassword');
+      console.log(userEmail, userPassword);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  
+  getData();
 
  /*ws://192.168.0.31:8080 */
   /*wss://healthwetu.nw.r.appspot.com:8080 */ 
@@ -31,12 +59,13 @@ const Home =({navigation})=> {
  console.log('first log ever ')
  
 
-
+console.log(authState.token)
 
 
     return( 
-    <ScrollView>
-        
+    <ScrollView>    
+         <Text>{authState.user}</Text>
+      <Text>{authState.token}</Text>  
          <View styles={styles.container}>
              <Image 
             style= {styles.Image}

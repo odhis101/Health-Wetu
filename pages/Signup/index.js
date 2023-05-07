@@ -13,7 +13,7 @@ const SignUp =({navigation})=> {
         navigation.goBack();
         };
     return (
-        <View>
+        <View style={{backgroundColor:'white', height:'100%'}}>  
             <View style= {styles.container}>
             <DirectionButton navigation={goBack} arrowdirection={'arrowleft'} size = {12}/>
             <Text style={{ fontSize: 22, marginBottom: '10%', marginTop:'5%',fontWeight: 'bold' }}>Login</Text>

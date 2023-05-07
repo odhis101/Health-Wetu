@@ -17,14 +17,15 @@ const NewUser =({navigation})=> {
         navigation.navigate('SignUp');
       };
     return (
-        <View>
+        <View style= {styles.container}>
             <Image 
             style= {styles.Image}
             source={require( '../../assets/HealthWetu.png' )}
             />
+            <View style = {styles.LoginButton}>
             <LoginButton onPress={handleLoginButton} text={'login'}/>
             <LoginButton onPress={handleSignUpButton} text={'Sign Up'}/>
-
+            </View>
         </View>
     );
 }
