@@ -23,28 +23,15 @@ const RootNavigator = () => {
           headerShown: false,
           gestureEnabled: true,
           gestureDirection: 'horizontal',
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // for smooth transition
         }}
       >
-                   <Stack.Screen
-                  name="NewUser"
-                  component={NewUser}
-                  />
-                   <Stack.Screen
-                  name="Login"
-                  component={Login}
-                  />
-                   <Stack.Screen
-                  name="SignUp"
-                  component={SignUp}
-                  />
-                  
+
+         
+        
                <Stack.Screen
                 name="Home"
                 component={Home}
-                options={{
-                  gestureDirection: 'none', // disable left swipe for going back
-                }}
+            
 
               
              />

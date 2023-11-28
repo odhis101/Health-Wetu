@@ -7,24 +7,25 @@ const FormButton = ({text,textValue,textOnchange}) => {
   const [hidePassword, setHidePassword] = useState(true);
     return (
       <>
-          <View style={styles.inputView}>
-      <TextInput
+<View style={styles.inputView}>
+    <TextInput
         style={styles.input}
         placeholder={text}
-        placeholderTextColor="black"
+        placeholderTextColor="#333"
         keyboardType="default"
         autoCapitalize="none"
         value={textValue}
         onChangeText={textOnchange}
         secureTextEntry={text === 'Password' ? hidePassword : false}
-
-      />
-      {text === 'Password' && (
-        <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-          <Text>{hidePassword ? 'Show' : 'Hide'}</Text>
+    />
+    {text === 'Password' && textValue.length > 0 && (
+        <TouchableOpacity onPress={() => setHidePassword(!hidePassword)} style={styles.toggleButton}>
+            <Text style={styles.toggleButtonText}>{hidePassword ? 'Show' : 'Hide'}</Text>
         </TouchableOpacity>
-      )}
-    </View>
+    )}
+</View>
+
+
       </>
       
     );

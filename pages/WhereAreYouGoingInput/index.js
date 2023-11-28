@@ -11,9 +11,6 @@ const Destination = () => {
 
     const [originPlace, setOriginPlace] = useState(null);
     const [destinationPlace, setDestinationPlace] = useState(null);
-    const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
-
-
   
     const navigation = useNavigation();
     

@@ -6,7 +6,7 @@ import OurButton from "health-wetu/components/ourButton/ourButton.js"
 import ModuleButton from "health-wetu/components/moduleButton/moduleButton.js"
 import React, { useState, useEffect,useRef } from 'react';
 import io from 'socket.io-client';
-import { useAuth } from '../../AuthContext';
+//import { useAuth } from '../../AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -15,37 +15,40 @@ const Home =({navigation})=> {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const { authState } = useAuth();
+  //const { authState } = useAuth();
   const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    const storeData = async () => {
-      try {
-        await AsyncStorage.setItem('userEmail', authState.user);
-        await AsyncStorage.setItem('userPassword', authState.password);
-      } catch (e) {
-        console.log('Error storing data:', e);
-      }
-    };
-
-    storeData();
-  }, [authState]);
-  const getData = async () => {
-    try {
-      const userEmail = await AsyncStorage.getItem('userEmail');
-      const userPassword = await AsyncStorage.getItem('userPassword');
-      console.log(userEmail, userPassword);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  
-  getData();
 
  /*ws://192.168.0.31:8080 */
   /*wss://healthwetu.nw.r.appspot.com:8080 */ 
 
-    
+  const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
+
+  const findNearestHospital = async () => {
+    try {
+      setLoading(true);
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+      }
+      const location = await Location.getCurrentPositionAsync({});
+      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      const nearestHospital = data.results[0];
+      //setLoading(false);
+      setDestinationPlace({
+        description: nearestHospital.name,
+        geometry: { location: nearestHospital.geometry.location },
+      });
+      console.log(destinationPlace);
+      
+    } catch (error) {
+      //setLoading(false);
+      console.error(error);
+    }
+  };
 
   const pressHandler =() =>{
       navigation.navigate('WhereAreYouGoingInput');
@@ -59,19 +62,15 @@ const Home =({navigation})=> {
  console.log('first log ever ')
  
 
-console.log(authState.token)
-
-
     return( 
     <ScrollView>    
-         <Text>{authState.user}</Text>
-      <Text>{authState.token}</Text>  
+         <Text>{'joshua'}</Text>
          <View styles={styles.container}>
              <Image 
             style= {styles.Image}
             source={require( '../../assets/HealthWetu.png' )}
             />
-            <OurButton text='Where are you ' onPress={pressHandler} /> 
+            <OurButton text='Call Now !! ' onPress={findNearestHospital} /> 
         
 
 

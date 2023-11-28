@@ -18,13 +18,11 @@ import { AuthProvider } from './AuthContext';
 
 const App = () => {
   return (
-    <AuthProvider>
       <SafeAreaView style={styles.container}>
   
         <Root />
         <StatusBar style="auto" />
       </SafeAreaView>
-    </AuthProvider>
   );
 }
 
