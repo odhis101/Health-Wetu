@@ -36,6 +36,7 @@ const Home =({navigation})=> {
     const subscription = Gyroscope.addListener((gyroscopeData) => {
       setGyroData(gyroscopeData);
 
+      // magnitude is = speed in any deriction 
       const magnitude = Math.sqrt(
         gyroscopeData.x ** 2 + gyroscopeData.y ** 2 + gyroscopeData.z ** 2
       );
