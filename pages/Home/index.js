@@ -8,6 +8,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import io from 'socket.io-client';
 //import { useAuth } from '../../AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
 
 
 
@@ -17,6 +18,8 @@ const Home =({navigation})=> {
   const [inputValue, setInputValue] = useState('');
   //const { authState } = useAuth();
   const [userData, setUserData] = useState(null);
+  const [destinationPlace, setDestinationPlace] = useState(null);
+  const [loading, setLoading] = useState(false); // initialize the loading state as false
 
 
  /*ws://192.168.0.31:8080 */
@@ -33,6 +36,7 @@ const Home =({navigation})=> {
         return;
       }
       const location = await Location.getCurrentPositionAsync({});
+      console.log(location);
       const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
       const response = await fetch(url);
       const data = await response.json();
@@ -42,6 +46,11 @@ const Home =({navigation})=> {
         description: nearestHospital.name,
         geometry: { location: nearestHospital.geometry.location },
       });
+      setOriginPlace({
+        description: 'Current Location', // Modify this to your preference
+        geometry: { location: { lat: location.coords.latitude, lng: location.coords.longitude } },
+      });
+  
       console.log(destinationPlace);
       
     } catch (error) {
