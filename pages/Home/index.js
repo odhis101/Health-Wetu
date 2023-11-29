@@ -9,6 +9,8 @@ import io from 'socket.io-client';
 //import { useAuth } from '../../AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
+import { Gyroscope } from 'expo-sensors';
+import { Audio } from 'expo-av';
 
 
 
@@ -21,11 +23,111 @@ const Home =({navigation})=> {
   const [destinationPlace, setDestinationPlace] = useState(null);
   const [loading, setLoading] = useState(false); // initialize the loading state as false
 
-
+  const [gyroData, setGyroData] = useState({ x: 0, y: 0, z: 0 });
+  const [fallState, setFallState] = useState('none');
+  const [accelerationStartMagnitude, setAccelerationStartMagnitude] = useState(0);
  /*ws://192.168.0.31:8080 */
   /*wss://healthwetu.nw.r.appspot.com:8080 */ 
 
   const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
+
+
+  useEffect(() => {
+    const subscription = Gyroscope.addListener((gyroscopeData) => {
+      setGyroData(gyroscopeData);
+
+      const magnitude = Math.sqrt(
+        gyroscopeData.x ** 2 + gyroscopeData.y ** 2 + gyroscopeData.z ** 2
+      );
+
+      // Set experimental thresholds based on testing
+      const accelerationThreshold = 5; // Adjust based on testing
+      const decelerationThreshold = 1; // Adjust based on testing
+
+      switch (fallState) {
+        case 'none':
+          if (magnitude > accelerationThreshold) {
+            setFallState('acceleration');
+            setAccelerationStartMagnitude(magnitude);
+            console.log('Acceleration phase started');
+          }
+          break;
+
+        case 'acceleration':
+          if (magnitude < decelerationThreshold) {
+            setFallState('deceleration');
+            console.log('Deceleration phase started');
+          }
+          break;
+
+        case 'deceleration':
+          // Record angular velocity data during deceleration
+          // Calculate magnitude of deceleration
+          const decelerationMagnitude = accelerationStartMagnitude - magnitude;
+          console.log('Deceleration magnitude:', decelerationMagnitude);
+
+          // Define criteria for a fall based on acceleration and deceleration magnitudes
+          const fallCriteria = {
+            accelerationMagnitudeThreshold: 2, // Adjust based on testing
+            decelerationMagnitudeThreshold: 2, // Adjust based on testing
+          };
+
+          // Check if the criteria for a fall are met
+          if (
+            accelerationStartMagnitude > fallCriteria.accelerationMagnitudeThreshold &&
+            decelerationMagnitude > fallCriteria.decelerationMagnitudeThreshold
+          ) {
+            console.log('Fall detected!');
+            // Trigger additional actions for a fall
+          }
+
+          // Reset state to 'none' after processing a fall
+          setFallState('none');
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [fallState]);
+
+
+
+
+  // audio sensor 
+  useEffect(() => {
+    // Request audio recording permissions
+  
+    const startRecording = async () => {
+      try {
+        const { status } = await Audio.requestPermissionsAsync();
+        if (status !== 'granted') {
+          console.error('Permission to access audio was denied');
+          return;
+        }
+  
+        const recording = new Audio.Recording();
+        await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+        await recording.startAsync();
+  
+        // Analyze audio data for fall detection
+      } catch (error) {
+        console.error('Error starting audio recording:', error);
+      }
+    };
+  
+    startRecording();
+  
+    return () => {
+      // Stop recording and clean up resources
+    };
+  }, []);
+  
+  
 
   const findNearestHospital = async () => {
     try {
@@ -40,6 +142,7 @@ const Home =({navigation})=> {
   
       // Get current location
       const location = await Location.getCurrentPositionAsync();
+  
       console.log('Current location:', location);
   
       // Fetch nearby hospitals
@@ -71,9 +174,9 @@ const Home =({navigation})=> {
       console.log('Destination place:', destinationPlace);
   
       // Navigate to the DestinationScreen once data is loaded
-      navigation.navigate('DestinationScreen', {
-        origin: originPlace,
-        destination: destinationPlace,
+      navigation.navigate('searchResults', {
+        originPlace,
+        destinationPlace,
       });
   
     } catch (error) {
