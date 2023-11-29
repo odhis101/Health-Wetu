@@ -30,34 +30,69 @@ const Home =({navigation})=> {
   const findNearestHospital = async () => {
     try {
       setLoading(true);
+  
+      // Request location permissions
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         console.error('Permission to access location was denied');
         return;
       }
-      const location = await Location.getCurrentPositionAsync({});
-      console.log(location);
+  
+      // Get current location
+      const location = await Location.getCurrentPositionAsync();
+      console.log('Current location:', location);
+  
+      // Fetch nearby hospitals
       const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
       const response = await fetch(url);
       const data = await response.json();
+  
+      // Check if there are results
+      if (data.results.length === 0) {
+        console.error('No hospitals found nearby');
+        return;
+      }
+  
+      // Get the nearest hospital
       const nearestHospital = data.results[0];
-      //setLoading(false);
+  
+      // Set destination place
       setDestinationPlace({
         description: nearestHospital.name,
         geometry: { location: nearestHospital.geometry.location },
       });
+  
+      // Set origin place
       setOriginPlace({
-        description: 'Current Location', // Modify this to your preference
+        description: 'Current Location',
         geometry: { location: { lat: location.coords.latitude, lng: location.coords.longitude } },
       });
   
-      console.log(destinationPlace);
-      
+      console.log('Destination place:', destinationPlace);
+  
+      // Navigate to the DestinationScreen once data is loaded
+      navigation.navigate('DestinationScreen', {
+        origin: originPlace,
+        destination: destinationPlace,
+      });
+  
     } catch (error) {
-      //setLoading(false);
-      console.error(error);
+      // Handle errors based on their type
+      if (error instanceof Location.PermissionError) {
+        console.error('Error getting location permissions:', error);
+      } else if (error instanceof Location.LocationError) {
+        console.error('Error getting current location:', error);
+      } else if (error instanceof FetchError) {
+        console.error('Error fetching nearby hospitals:', error);
+      } else {
+        console.error('Unknown error:', error);
+      }
+    } finally {
+      setLoading(false);
     }
   };
+  
+  
 
   const pressHandler =() =>{
       navigation.navigate('WhereAreYouGoingInput');
