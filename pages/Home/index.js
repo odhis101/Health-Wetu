@@ -9,8 +9,8 @@ import io from 'socket.io-client';
 //import { useAuth } from '../../AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
-import { Gyroscope } from 'expo-sensors';
-import { Audio } from 'expo-av';
+//import { Gyroscope } from 'expo-sensors';
+//import { Audio } from 'expo-av';
 
 
 
@@ -31,7 +31,7 @@ const Home =({navigation})=> {
 
   const apiKey = 'AIzaSyATR4shLx3yAHIijF8AinfuZdG0bc-lTEU';
 
-
+/*
   useEffect(() => {
     const subscription = Gyroscope.addListener((gyroscopeData) => {
       setGyroData(gyroscopeData);
@@ -90,14 +90,14 @@ const Home =({navigation})=> {
           break;
       }
     });
-
     return () => {
       subscription.remove();
     };
   }, [fallState]);
+  */
 
 
-
+/*
 
   // audio sensor 
   useEffect(() => {
@@ -129,10 +129,11 @@ const Home =({navigation})=> {
   }, []);
   
   
-
+*/
   const findNearestHospital = async () => {
     try {
       setLoading(true);
+      console.log('Getting current location...');
   
       // Request location permissions
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -140,12 +141,16 @@ const Home =({navigation})=> {
         console.error('Permission to access location was denied');
         return;
       }
+      console.log('Location permissions granted');
   
-      // Get current location
-      const location = await Location.getCurrentPositionAsync();
-  
-      console.log('Current location:', location);
-  
+      // try get current location 
+      try {
+        const location = await Location.getCurrentPositionAsync();
+        console.log('Current location:', location);
+      } catch (error) {
+        console.error('Error getting current location:', error);
+      }    
+    
       // Fetch nearby hospitals
       const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
       const response = await fetch(url);
