@@ -134,28 +134,45 @@ const Home =({navigation})=> {
     try {
       setLoading(true);
       console.log('Getting current location...');
+
   
       // Request location permissions
       const { status } = await Location.requestForegroundPermissionsAsync();
+      console.log('Location permissions status:', status);
       if (status !== 'granted') {
         console.error('Permission to access location was denied');
         return;
       }
       console.log('Location permissions granted');
+      console.log('Getting current location...');
   
       // try get current location 
+      /*
       try {
         const location = await Location.getCurrentPositionAsync();
         console.log('Current location:', location);
       } catch (error) {
         console.error('Error getting current location:', error);
       }    
-    
+      */
+     // Hard-coded location data for Kileleshwa, Nairobi
+const location = {
+  coords: {
+    latitude: -1.2786,
+    longitude: 36.7616,
+  },
+};
+
+console.log('Current location:', location);
+
+
+      console.log('Getting nearby hospitals...');
       // Fetch nearby hospitals
       const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&type=hospital&key=${apiKey}`;
       const response = await fetch(url);
+      console.log(response)
       const data = await response.json();
-  
+      console.log('Nearby hospitals:', data);
       // Check if there are results
       if (data.results.length === 0) {
         console.error('No hospitals found nearby');
